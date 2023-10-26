@@ -41,7 +41,6 @@ def hashtags_by_date():
 
     hashtags_count = readFileHandler.hashtags_by_date(fechainicio,fechafinal)
     return jsonify(hashtags_count)
-    # return readFileHandler.hashtags_by_date(fecha)
 
 @app.route('/menciones',methods=['GET'])
 def mentions_by_date():
@@ -50,7 +49,6 @@ def mentions_by_date():
 
     mentions_count = readFileHandler.mentions_by_date(fechainicio,fechafinal)
     return jsonify(mentions_count)
-    # return readFileHandler.hashtags_by_date(fecha)
 
 @app.route('/consulta_sentimientos',methods=['GET'])
 def consulta_sentimientos():
@@ -59,7 +57,6 @@ def consulta_sentimientos():
 
     sentimientos_count = readFileHandler.sentimientos_by_date(fechainicio,fechafinal)
     return jsonify(sentimientos_count)
-    # return readFileHandler.hashtags_by_date(fecha)
 
 
 if __name__=="__main__":

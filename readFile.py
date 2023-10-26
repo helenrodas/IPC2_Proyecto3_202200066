@@ -15,6 +15,7 @@ class readFile():
         self.lista_mensajes = []
         self.lista_sentimientos=[]
         self.lista_tipoSentimientos = []
+        self.lista_fechas =[]
     
     def read_xml_sentimientos(self, file_content):
         root = ET.fromstring(file_content)
@@ -71,7 +72,10 @@ class readFile():
                 textoLower = texto.lower()
             nuevoMensaje= CMensaje(date,textoLower)
             self.lista_mensajes.append(nuevoMensaje)
+            if date not in self.lista_fechas:
+                self.lista_fechas.append(date)
         self.imprimirMensajes(self.lista_mensajes)
+        self.xml_salida()
 
     def imprimirMensajes(self,lista):
             print("*********Lista Mensajes********")
@@ -166,3 +170,35 @@ class readFile():
             fecha = sentimiento.fecha
             tipo = sentimiento.tipo
             print("fecha: ",fecha,"tipo: ",tipo)
+    
+    def xml_salida(self):
+        padre = ET.Element('MENSAJES_RECIBIDOS')
+        lista_fechas = self.lista_fechas
+        
+        for fecha in lista_fechas:
+            nodoTiempo = ET.SubElement(padre,'TIEMPO')
+            nodoFecha = ET.SubElement(nodoTiempo,'FECHA')
+            nodoFecha.text = fecha
+            nodoMensaje = ET.SubElement(nodoTiempo,'MSJ_RECIBIDOS')
+            nodoMensaje.text = 'msj'
+            nodoMenciones = ET.SubElement(nodoTiempo,'USR_MENCIONADOS')
+            nodoMenciones.text = 'msj'
+            nodoHashtags = ET.SubElement(nodoTiempo,'HASH_INCLUIDOS')
+            nodoHashtags.text = 'msj'
+        self.prettify_xml(padre)
+        tree = ET.ElementTree(padre)
+        tree.write("resumenMensajes.xml",encoding="UTF-8",xml_declaration=True)
+
+    
+    def prettify_xml(self,element, indent='    '):
+        queue = [(0, element)]  # (level, element)
+        while queue:
+            level, element = queue.pop(0)
+            children = [(level + 1, child) for child in list(element)]
+            if children:
+                element.text = '\n' + indent * (level+1) 
+            if queue:
+                element.tail = '\n' + indent * queue[0][0]  
+            else:
+                element.tail = '\n' + indent * (level-1)  
+            queue[0:0] = children
