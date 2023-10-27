@@ -1,6 +1,4 @@
 import xml.etree.ElementTree as ET
-from CNegativo import CNegativo
-from listaNegativos import listaNegativos
 from CMensaje import CMensaje
 import re
 from datetime import datetime
@@ -16,6 +14,8 @@ class readFile():
         self.lista_tipoSentimientos = []
         self.lista_fechas =[]
         self.datos_por_fecha = []
+        self.lista_positivosRechazada = []
+        self.lista_negativosRechazada = []
     
     def read_xml_sentimientos(self, file_content):
         root = ET.fromstring(file_content)
@@ -24,10 +24,14 @@ class readFile():
             lista_sentimientos_positivos = nodoPositivo.findall('palabra')
             for sentimiento_positivo in lista_sentimientos_positivos:
                 sentimientoP = sentimiento_positivo.text
-                PositovoLower = sentimientoP.lower()
-                # nuevo_sentimientoPos= CPositivo(sentimientoP)
-                self.lista_positivos_temp.append(PositovoLower)
+                positovoLower = sentimientoP.lower()
+                if positovoLower in self.lista_negativos_temp:
+                    self.lista_negativos_temp.remove(positovoLower)
+                    self.lista_negativosRechazada.append(positovoLower)
+                else:
+                    self.lista_positivos_temp.append(positovoLower)
             self.imprimirPositivos(self.lista_positivos_temp)
+            self.imprimirNegativosRechazada(self.lista_negativosRechazada)
         self.lista_sentimientos.append(self.lista_positivos_temp)
         NodoListaNegativos = root.findall('sentimientos_negativos')
         for nodoNegativo in NodoListaNegativos:
@@ -35,11 +39,15 @@ class readFile():
             for sentimiento_negativo in lista_sentimientos_negativos:
                 sentimientoN = sentimiento_negativo.text
                 negativoLower = sentimientoN.lower()
-                # nuevo_sentimientoNeg= CNegativo(sentimientoN)
-                self.lista_negativos_temp.append(negativoLower)
+                if negativoLower in self.lista_positivos_temp:
+                    self.lista_positivos_temp.remove(negativoLower)
+                    self.lista_positivosRechazada.append(negativoLower)
+                else:
+                    self.lista_negativos_temp.append(negativoLower)
             self.imprimirNegativos(self.lista_negativos_temp)
+            self.imprimirPositivosRechazada(self.lista_positivosRechazada)
         self.lista_sentimientos.append(self.lista_negativos_temp)
-        
+        self.xml_config()
     
     def imprimirPositivos(self,lista):
         print("*********Lista Sentimientos Positivos********")
@@ -55,6 +63,22 @@ class readFile():
             negativo = sentimiento
             print("Sentimiento Negativo: ",negativo)
         print("*********************************************")
+    
+    def imprimirPositivosRechazada(self,lista):
+        print("*********Lista Sentimientos Positivos Rechazados********")
+        for sentimiento in lista:
+            rechazado = sentimiento
+            print("Sentimiento Positivo Rechazado: ",rechazado)
+        print("*********************************************")
+        print("")
+    
+    def imprimirNegativosRechazada(self,lista):
+        print("*********Lista Sentimientos Negativos Rechazados********")
+        for sentimiento in lista:
+            rechazado = sentimiento
+            print("Sentimiento Negativo Rechazado: ",rechazado)
+        print("*********************************************")
+        print("")
     
     def read_xml_mensajes(self, file_content):
         root = ET.fromstring(file_content)
@@ -72,11 +96,11 @@ class readFile():
                 textoLower = texto.lower()
             nuevoMensaje= CMensaje(date,textoLower)
             self.lista_mensajes.append(nuevoMensaje)
-            if date not in self.lista_fechas:
-                self.lista_fechas.append(date)
+            # if date not in self.lista_fechas:
+            #     self.lista_fechas.append(date)
         self.imprimirMensajes(self.lista_mensajes)
         self.get_message_data()
-        self.xml_salida()
+        self.xml_mensajes()
 
     def imprimirMensajes(self,lista):
             print("*********Lista Mensajes********")
@@ -87,41 +111,6 @@ class readFile():
                 print("texto: ",texto)
             print("*********************************************")
     
-    # def get_message_data(self):
-    #     date_format = "%d/%m/%Y"
-    #     contadorHashtag_por_fecha = {}
-    #     contadorMenciones_por_fecha = {}
-    #     contadorFecha = {}
-    #     contador_mensajes=0
-
-    #     for mensaje in self.lista_mensajes:
-    #         tempDate = datetime.strptime(mensaje.fecha, date_format)
-    #         hashtags = re.findall(r'#\w+#', mensaje.texto)
-    #         menciones = re.findall(r'@\w+', mensaje.texto)
-            
-    #         if tempDate in contadorFecha:
-    #             contadorFecha[tempDate] += 1
-    #         else:
-    #             contadorFecha[tempDate] = 1
-            
-            
-
-    #         if tempDate in contadorHashtag_por_fecha:
-    #             contadorHashtag_por_fecha[tempDate] += len(hashtags)
-    #         else:
-    #             contadorHashtag_por_fecha[tempDate] = len(hashtags)
-            
-    #         if tempDate in contadorMenciones_por_fecha:
-    #             contadorMenciones_por_fecha[tempDate] += len(menciones)
-    #         else:
-    #             contadorMenciones_por_fecha[tempDate] = len(menciones)
-
-    #     for fecha, contador in contadorHashtag_por_fecha.items():
-    #         print("Fecha:", fecha, "Contador hashtags:", contador)
-    #     for fecha, contador in contadorMenciones_por_fecha.items():
-    #         print("Fecha:", fecha, "Contador menciones:", contador)
-    #     for fecha, contador in contadorFecha.items():
-    #         print("Fecha:", fecha, "Contador mensajes:", contador)
     
     def get_message_data(self):
         date_format = "%d/%m/%Y"
@@ -241,7 +230,8 @@ class readFile():
             tipo = sentimiento.tipo
             print("fecha: ",fecha,"tipo: ",tipo)
     
-    def xml_salida(self):
+    
+    def xml_mensajes(self):
         padre = ET.Element('MENSAJES_RECIBIDOS')
         lista_datos_por_fecha = self.datos_por_fecha
         
@@ -259,6 +249,24 @@ class readFile():
         self.prettify_xml(padre)
         tree = ET.ElementTree(padre)
         tree.write("resumenMensajes.xml",encoding="UTF-8",xml_declaration=True)
+    
+    
+    
+    def xml_config(self):
+        padre = ET.Element('CONFIG_RECIBIDA')
+        
+        nodoPalabrasPositivas = ET.SubElement(padre,'PALABRAS_POSITIVAS')
+        nodoPalabrasPositivas.text = str(len(self.lista_positivos_temp))
+        nodoPositivasRechazadas = ET.SubElement(padre,'PALABRAS_POSITIVAS_RECHAZADA')
+        nodoPositivasRechazadas.text = str(len(self.lista_positivosRechazada))
+        nodoPalabrasNegativas = ET.SubElement(padre,'PALABRAS_NEGATIVAS')
+        nodoPalabrasNegativas.text = str(len(self.lista_negativos_temp))
+        nodoNegativasRechazadas = ET.SubElement(padre,'PALABRAS_NEGATIVAS_RECHAZADA')
+        nodoNegativasRechazadas.text = str(len(self.lista_negativosRechazada))
+        
+        self.prettify_xml(padre)
+        tree = ET.ElementTree(padre)
+        tree.write("resumenConfig.xml",encoding="UTF-8",xml_declaration=True)
 
     
     def prettify_xml(self,element, indent='    '):

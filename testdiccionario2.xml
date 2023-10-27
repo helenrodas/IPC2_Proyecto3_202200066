@@ -1,8 +1,7 @@
-<?xml version="1.0"?>
 <diccionario>
     <sentimientos_positivos>
-        <palabra>siprimero</palabra>
-        <palabra>si</palabra>
+        <palabra>bueno</palabra>
+        <palabra>excelente</palabra>
         <palabra>cool</palabra>
         <palabra>satisfecho</palabra>
         <palabra>lolo</palabra>
@@ -28,10 +27,9 @@
         <palabra>extraordinario</palabra>
         <palabra>loli</palabra>
     </sentimientos_positivos>
-
     <sentimientos_negativos>
         <palabra>malo</palabra>
-        <palabra>bueno</palabra>
+        <palabra>loli</palabra>
         <palabra>pésivo</palabra>
         <palabra>triste</palabra>
         <palabra>molesto</palabra>
@@ -51,12 +49,11 @@
         <palabra>abominable</palabra>
         <palabra>desagradable</palabra>
         <palabra>infernal</palabra>
-        <palabra>excelente</palabra>
+        <palabra>lolo</palabra>
         <palabra>inaceptable</palabra>
         <palabra>odioso</palabra>
         <palabra>lúgubre</palabra>
         <palabra>insatisfactorio</palabra>
         <palabra>desafortunado</palabra>
     </sentimientos_negativos>
-
 </diccionario>
