@@ -1,12 +1,11 @@
 import xml.etree.ElementTree as ET
-from CPositivo import CPositivo
-from listaPositivos import listaPositivos
 from CNegativo import CNegativo
 from listaNegativos import listaNegativos
 from CMensaje import CMensaje
 import re
 from datetime import datetime
 from CDatosFechas import CDatosFechas
+from CDatos import CDatos
 
 class readFile():
     def __init__(self):
@@ -16,6 +15,7 @@ class readFile():
         self.lista_sentimientos=[]
         self.lista_tipoSentimientos = []
         self.lista_fechas =[]
+        self.datos_por_fecha = []
     
     def read_xml_sentimientos(self, file_content):
         root = ET.fromstring(file_content)
@@ -75,6 +75,7 @@ class readFile():
             if date not in self.lista_fechas:
                 self.lista_fechas.append(date)
         self.imprimirMensajes(self.lista_mensajes)
+        self.get_message_data()
         self.xml_salida()
 
     def imprimirMensajes(self,lista):
@@ -85,6 +86,75 @@ class readFile():
                 print("fecha: ",fecha)
                 print("texto: ",texto)
             print("*********************************************")
+    
+    # def get_message_data(self):
+    #     date_format = "%d/%m/%Y"
+    #     contadorHashtag_por_fecha = {}
+    #     contadorMenciones_por_fecha = {}
+    #     contadorFecha = {}
+    #     contador_mensajes=0
+
+    #     for mensaje in self.lista_mensajes:
+    #         tempDate = datetime.strptime(mensaje.fecha, date_format)
+    #         hashtags = re.findall(r'#\w+#', mensaje.texto)
+    #         menciones = re.findall(r'@\w+', mensaje.texto)
+            
+    #         if tempDate in contadorFecha:
+    #             contadorFecha[tempDate] += 1
+    #         else:
+    #             contadorFecha[tempDate] = 1
+            
+            
+
+    #         if tempDate in contadorHashtag_por_fecha:
+    #             contadorHashtag_por_fecha[tempDate] += len(hashtags)
+    #         else:
+    #             contadorHashtag_por_fecha[tempDate] = len(hashtags)
+            
+    #         if tempDate in contadorMenciones_por_fecha:
+    #             contadorMenciones_por_fecha[tempDate] += len(menciones)
+    #         else:
+    #             contadorMenciones_por_fecha[tempDate] = len(menciones)
+
+    #     for fecha, contador in contadorHashtag_por_fecha.items():
+    #         print("Fecha:", fecha, "Contador hashtags:", contador)
+    #     for fecha, contador in contadorMenciones_por_fecha.items():
+    #         print("Fecha:", fecha, "Contador menciones:", contador)
+    #     for fecha, contador in contadorFecha.items():
+    #         print("Fecha:", fecha, "Contador mensajes:", contador)
+    
+    def get_message_data(self):
+        date_format = "%d/%m/%Y"
+
+        for mensaje in self.lista_mensajes:
+            tempDate = datetime.strptime(mensaje.fecha, date_format)
+            hashtags = re.findall(r'#\w+#', mensaje.texto)
+            menciones = re.findall(r'@\w+', mensaje.texto)
+
+            # Busca si ya existe una instancia de CDatos para la fecha
+            data_existente = None
+            for data in self.datos_por_fecha:
+                if data.fecha == tempDate:
+                    data_existente = data
+                    break
+
+            if data_existente:
+                data_existente.hashtags.extend(hashtags)
+                data_existente.menciones.extend(menciones)
+                data_existente.mensajes += 1
+            else:
+                nueva_data = CDatos(tempDate)
+                nueva_data.hashtags.extend(hashtags)
+                nueva_data.menciones.extend(menciones)
+                nueva_data.mensajes = 1
+                self.datos_por_fecha.append(nueva_data)
+
+        for datos in self.datos_por_fecha:
+            print("Fecha:", datos.fecha)
+            print("Contador hashtags:", len(datos.hashtags))
+            print("Contador menciones:", len(datos.menciones))
+            print("Contador mensajes:", datos.mensajes)
+    
     
     
     def hashtags_by_date(self,fechainicio, fechafinal):
@@ -173,18 +243,19 @@ class readFile():
     
     def xml_salida(self):
         padre = ET.Element('MENSAJES_RECIBIDOS')
-        lista_fechas = self.lista_fechas
+        lista_datos_por_fecha = self.datos_por_fecha
         
-        for fecha in lista_fechas:
+        for dato in lista_datos_por_fecha:
             nodoTiempo = ET.SubElement(padre,'TIEMPO')
             nodoFecha = ET.SubElement(nodoTiempo,'FECHA')
-            nodoFecha.text = fecha
+            fecha_formateada = dato.fecha.strftime("%d/%m/%Y")
+            nodoFecha.text = fecha_formateada
             nodoMensaje = ET.SubElement(nodoTiempo,'MSJ_RECIBIDOS')
-            nodoMensaje.text = 'msj'
+            nodoMensaje.text = str(dato.mensajes)
             nodoMenciones = ET.SubElement(nodoTiempo,'USR_MENCIONADOS')
-            nodoMenciones.text = 'msj'
+            nodoMenciones.text = str(len(dato.menciones))
             nodoHashtags = ET.SubElement(nodoTiempo,'HASH_INCLUIDOS')
-            nodoHashtags.text = 'msj'
+            nodoHashtags.text = str(len(dato.hashtags))
         self.prettify_xml(padre)
         tree = ET.ElementTree(padre)
         tree.write("resumenMensajes.xml",encoding="UTF-8",xml_declaration=True)
