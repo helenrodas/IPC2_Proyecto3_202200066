@@ -58,6 +58,12 @@ def consulta_sentimientos():
     sentimientos_count = readFileHandler.sentimientos_by_date(fechainicio,fechafinal)
     return jsonify(sentimientos_count)
 
+@app.route('/limpiarDatos',methods=['POST'])
+def limpiarDatos():
+    readFileHandler.clear_lists()
+    return jsonify({
+        "message": "El programa se reinicio exitosamente"
+        })
 
 if __name__=="__main__":
     app.run(threaded=True,port=5000,debug=True)

@@ -281,3 +281,14 @@ class readFile():
             else:
                 element.tail = '\n' + indent * (level-1)  
             queue[0:0] = children
+    
+    def clear_lists(self):
+        self.lista_positivos_temp = []
+        self.lista_negativos_temp = []
+        self.lista_mensajes = []
+        self.lista_sentimientos=[]
+        self.lista_tipoSentimientos = []
+        self.lista_fechas =[]
+        self.datos_por_fecha = []
+        self.lista_positivosRechazada = []
+        self.lista_negativosRechazada = []
