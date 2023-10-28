@@ -37,7 +37,7 @@ def upload_file_mensajes():
 @app.route('/hashtags',methods=['GET'])
 def hashtags_by_date():
     fechainicio = request.form.get('fechainicio')
-    fechafinal = request.form.get('fechafinal')
+    fechafinal = request.form.get('fechafinal') 
 
     hashtags_count = readFileHandler.hashtags_by_date(fechainicio,fechafinal)
     return jsonify(hashtags_count)
