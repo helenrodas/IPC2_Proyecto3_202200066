@@ -32,20 +32,26 @@ def consultaHashtags(request):
         pass
     return render(request, 'hashtags.html')
 
-def get_response_from_flask(request):
-    try:
-        response = requests.get('http://127.0.0.1:5000/hashtags')
-        response.raise_for_status()
-        response_data = response.json()
-        return JsonResponse(response_data)
-    except requests.exceptions.RequestException as e:
-        return HttpResponse(str(e), status=500)
-    
-def get_response_from_flask2(request):
-    try:
-        response = requests.get('http://127.0.0.1:5000/menciones')
-        response.raise_for_status()
-        response_data = response.json()
-        return JsonResponse(response_data)
-    except requests.exceptions.RequestException as e:
-        return HttpResponse(str(e), status=500)
+def consultaMenciones(request):
+    if request.method == 'POST':
+        pass
+    return render(request, 'menciones.html')
+
+def consultaSentimientos(request):
+    if request.method == 'POST':
+        pass
+    return render(request, 'sentimientos.html')
+
+def ayuda(request):
+    if request.method == 'POST':
+        pass
+    return render(request, 'ayuda.html')
+
+# def get_response_from_flask(request):
+#     try:
+#         response = requests.get('http://127.0.0.1:5000/hashtags')
+#         response.raise_for_status()
+#         response_data = response.json()
+#         return JsonResponse(response_data)
+#     except requests.exceptions.RequestException as e:
+#         return HttpResponse(str(e), status=500)
