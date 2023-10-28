@@ -4,10 +4,11 @@ from django.shortcuts import render
 
 
 
-def myform_view(request):
+def cargarArchivos(request):
     if request.method == 'POST':
         data = request.POST.get("data")
         file = request.FILES.get("file")
+        url  = request.POST.get("url")
 
         if not file:
             return JsonResponse({"message": "No se ha seleccionado un archivo."})
@@ -15,7 +16,7 @@ def myform_view(request):
         try:
             # Envía la solicitud al backend de Flask con el archivo adjunto
             files = {"file": (file.name, file.read())}
-            response = requests.post('http://127.0.0.1:5000/upload_file_sentimientos', data={"data": data}, files=files)
+            response = requests.post(url, data={"data": data}, files=files)
             response.raise_for_status()
 
             # Procesa la respuesta del backend de Flask
@@ -25,6 +26,11 @@ def myform_view(request):
             return HttpResponse(str(e), status=500)
 
     return render(request, 'pagina.html')
+
+def consultaHashtags(request):
+    if request.method == 'POST':
+        pass
+    return render(request, 'hashtags.html')
 
 def get_response_from_flask(request):
     try:

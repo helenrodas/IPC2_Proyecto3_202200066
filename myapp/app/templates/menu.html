@@ -1,0 +1,27 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+</head>
+<body>
+    <nav id="menu">
+        <ul>
+            <li><a href="{% url 'cargarArchivos'%}">Cargar Archivos</a></li>
+            <li><a href="{% url 'consultaHashtags'%}">Consultar Hashtags</a></li>
+            {% comment %} <li><a href="{% url 'menciones'%}">Consulta Menciones</a></li>
+            <li><a href="{% url 'sentimientos'%}">Consulta Sentimientos</a></li>
+            <li><a href="{% url 'grafica'%}">Gráfica</a></li>
+            <li><a href="{% url 'ayuda'%}">Ayuda</a></li>
+            <li><a href="{% url 'reiniciar'%}">Reniciar</a></li>  {% endcomment %}
+        </ul>
+    </nav>
+
+    {% block content %}
+    {% endblock  %}
+
+</body>
+</html>

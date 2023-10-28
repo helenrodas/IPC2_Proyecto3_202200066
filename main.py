@@ -17,7 +17,7 @@ def upload_file_sentimientos():
     # print(file_content)
     readFileHandler.read_xml_sentimientos(file_content)
     return jsonify({
-        "message": "El archivo fue cargado y leido exitosamente"
+        "message": "El archivo de sentimientos fue cargado y leido exitosamente"
         })
 
 @app.route('/upload_file_mensajes',methods=['POST'])
@@ -31,7 +31,7 @@ def upload_file_mensajes():
     # print(file_content)
     readFileHandler.read_xml_mensajes(file_content)
     return jsonify({
-        "message": "El archivo fue cargado y leido exitosamente"
+        "message": "El archivo de mensajes fue cargado y leido exitosamente"
         }) 
 
 @app.route('/hashtags',methods=['GET'])
