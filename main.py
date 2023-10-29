@@ -34,7 +34,7 @@ def upload_file_mensajes():
         "message": "El archivo de mensajes fue cargado y leido exitosamente"
         }) 
 
-@app.route('/hashtags',methods=['GET'])
+@app.route('/hashtags',methods=['POST'])
 def hashtags_by_date():
     fechainicio = request.form.get('fechainicio')
     fechafinal = request.form.get('fechafinal') 
@@ -42,7 +42,7 @@ def hashtags_by_date():
     hashtags_count = readFileHandler.hashtags_by_date(fechainicio,fechafinal)
     return jsonify(hashtags_count)
 
-@app.route('/menciones',methods=['GET'])
+@app.route('/menciones',methods=['POST'])
 def mentions_by_date():
     fechainicio = request.form.get('fechainicio')
     fechafinal = request.form.get('fechafinal')
@@ -50,7 +50,7 @@ def mentions_by_date():
     mentions_count = readFileHandler.mentions_by_date(fechainicio,fechafinal)
     return jsonify(mentions_count)
 
-@app.route('/consulta_sentimientos',methods=['GET'])
+@app.route('/consulta_sentimientos',methods=['POST'])
 def consulta_sentimientos():
     fechainicio = request.form.get('fechainicio')
     fechafinal = request.form.get('fechafinal')

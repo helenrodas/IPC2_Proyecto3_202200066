@@ -161,6 +161,7 @@ class readFile():
                         hashtags_count[hashtag] += 1
                     else:
                         hashtags_count[hashtag] = 1
+        print(hashtags_count)
         return hashtags_count
 
     def mentions_by_date(self,fechainicio, fechafinal):

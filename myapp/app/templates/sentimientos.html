@@ -2,4 +2,57 @@
 {% load static %}
 {% block content %}
 <h1>Consulta Sentimientos</h1>
+<form method="POST" id="consultaSentimientos" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>Fecha inicio</label>
+    <input type="date" id="fechainicio" name="fechainicio"  />
+    <label>Fecha Final</label>
+    <input type="date" id="fechafinal" name="fechafinal"  />
+    <button type="button" id="submitButtonSentimientos">Consultar Sentimientos</button>
+</form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#submitButtonSentimientos").click(function(e) {
+                e.preventDefault();
+                var form = new FormData();
+                var datein = new Date($("#fechainicio").val())
+                    var diain = datein.getUTCDate();
+                    var mesin = datein.getUTCMonth() + 1;
+                    var anioin = datein.getUTCFullYear();
+                    var fechain = [diain, mesin, anioin].join('/')
+                    var datefin = new Date($("#fechafinal").val())
+                    var diafin = datefin.getUTCDate();
+                    var mesfin = datefin.getUTCMonth() + 1;
+                    var aniofin = datefin.getUTCFullYear();
+                    var fechafin = [diafin, mesfin, aniofin].join('/')
+                    form.append('data', $("#inputData").val());
+                    form.append('fechainicio', fechain);
+                    form.append('fechafinal', fechafin);
+                var csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+                form.append('csrfmiddlewaretoken', csrfToken);
+
+                $.ajax({
+                    type: "POST",
+                    url: "",
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        var texto = ""
+                        var num = 1
+                        var menciones = response
+                        for (var key in menciones) {
+                            texto = texto + " "+num +": " + key + "= "+ menciones[key] +" mensajes" + "\n"
+                            num += 1
+                        }
+                        alert(texto)
+                    },
+                    error: function(xhr, status, error) {
+                        $("#response").html("Error: " + error);
+                    }
+                });
+            });
+        });
+        </script>
 {% endblock  %}
