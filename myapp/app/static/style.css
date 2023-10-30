@@ -1,0 +1,48 @@
+.container-fluid{
+    text-align: left;
+    color:black;
+    background-color: #7ca9d5 ;
+    padding-bottom: 20px;
+    padding-top: 10px;
+    margin-top: -8px;
+}
+.menu {
+    margin-right: 20px; 
+    padding-left: 10px;
+    padding-top: 100px;
+}
+
+.fondo{
+    background-color: #d7ebff;
+    padding-top: 50px;
+    margin-top: -33px;
+    padding-bottom: 282px;
+    text-align: center;
+}
+
+.fondoH{
+    background-color: #d7ebff;
+    padding-top: 50px;
+    margin-top: -33px;
+    padding-bottom: 227px;
+    text-align: center;
+}
+
+.subirArchivos{
+    text-align: center;
+    padding-top: 35px;
+}
+
+.center-element {
+    margin: 0 auto;
+}
+
+.custom-button {
+    white-space: normal;
+    width: 240px; /* Permite que el botón se ajuste automáticamente al texto */
+}
+
+.Hashtags{
+    text-align: center;
+    padding-top: 35px;
+}
