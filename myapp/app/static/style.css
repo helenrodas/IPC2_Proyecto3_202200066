@@ -24,10 +24,25 @@
     background-color: #d7ebff;
     padding-top: 50px;
     margin-top: -33px;
-    padding-bottom: 227px;
+    padding-bottom: 229px;
     text-align: center;
 }
 
+.fondoSent{
+    background-color: #d7ebff;
+    padding-top: 70px;
+    margin-top: -33px;
+    padding-bottom: 248px;
+    text-align: center;
+}
+
+.fondoA{
+    background-color: #d7ebff;
+    padding-top: 70px;
+    margin-top: -33px;
+    padding-bottom: 78px;
+    text-align: center;
+}
 .subirArchivos{
     text-align: center;
     padding-top: 35px;
@@ -45,4 +60,17 @@
 .Hashtags{
     text-align: center;
     padding-top: 35px;
+}
+
+.center-box {
+    border: 5px solid #7ca9d5 ;
+    border-radius: 10px;
+    padding: 20px;
+    width: 45%; /* Ajusta el ancho del cuadro según tus necesidades */
+    margin: 0 auto;
+    text-align:inherit;
+}
+
+.offcanvasNavbar{
+    background-color: #7ca9d5 ;
 }
