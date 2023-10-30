@@ -182,6 +182,7 @@ class readFile():
         return menciones_count
     
     def sentimientos_by_date(self,fechainicio, fechafinal):
+        self.lista_tipoSentimientos = []
         contador_sentimientos = {'positivos': 0, 'negativos': 0, 'neutros': 0}
         self.return_palabras()
         date_format = "%d/%m/%Y"

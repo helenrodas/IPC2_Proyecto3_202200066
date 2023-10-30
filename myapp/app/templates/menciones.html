@@ -3,16 +3,18 @@
 {% block content %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 <div class="fondoH">
     <h3>Consulta Menciones</h3>
     <form method="POST" id="consultaMenciones" enctype="multipart/form-data" class="my-4">
         {% csrf_token %}
         <div class="row g-3 justify-content-center">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label for="fechainicio" class="form-label">Fecha inicio</label>
                 <input type="date" id="fechainicio" name="fechainicio" class="form-control" required>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label for="fechafinal" class="form-label">Fecha final</label>
                 <input type="date" id="fechafinal" name="fechafinal" class="form-control" required>
             </div>
@@ -21,19 +23,25 @@
             </div>
         </div>
     </form>
+
     <div class="row g-3 justify-content-center">
-        <div class="col-md-3">
-            <textarea id="resultadoMenciones" class="form-control" rows="4" readonly style="display: none;"></textarea>
+        <div class="col-md-5">
+            <div id="chart"></div>
+        </div>
+        <div class="col-md-4">
+            <textarea id="resultadoMenciones" class="form-control" rows="5" readonly style="display: none;"></textarea>
         </div>
     </div>
+
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        var chart;
         $(document).ready(function() {
             $("#submitButtonMenciones").click(function(e) {
-                e.preventDefault();
-                var form = new FormData();
-                var datein = new Date($("#fechainicio").val())
+                    e.preventDefault();
+                    var form = new FormData();
+                    var datein = new Date($("#fechainicio").val())
                     var diain = datein.getUTCDate();
                     var mesin = datein.getUTCMonth() + 1;
                     var anioin = datein.getUTCFullYear();
@@ -46,31 +54,79 @@
                     form.append('data', $("#inputData").val());
                     form.append('fechainicio', fechain);
                     form.append('fechafinal', fechafin);
-                var csrfToken = $("input[name='csrfmiddlewaretoken']").val();
-                form.append('csrfmiddlewaretoken', csrfToken);
+                    var csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+                    form.append('csrfmiddlewaretoken', csrfToken);
 
-                $.ajax({
-                    type: "POST",
-                    url: "",
-                    data: form,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        var texto = ""
-                        var num = 1
-                        var menciones = response
-                        for (var key in menciones) {
-                            texto = texto + " "+num +": " + key + "= "+ menciones[key] +" mensajes" + "\n"
-                            num += 1
+                    $.ajax({
+                        type: "POST",
+                        url: "",
+                        data: form,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+
+                            var categories = Object.keys(response);
+                            var data = Object.values(response);
+        
+                            var options = {
+                                series: [{
+                                    name: 'Mensajes',
+                                    data: data,
+                                }],
+                                chart: {
+                                    height: 330,
+                                    type: 'bar',
+                                },
+                                plotOptions: {
+                                    bar: {
+                                        borderRadius: 10,
+                                        columnWidth: '40%',
+                                    }
+                                },
+                                dataLabels: {
+                                    enabled: false
+                                },
+                                stroke: {
+                                    width: 2
+                                },
+                                xaxis: {
+                                    labels: {
+                                        rotate: -45
+                                    },
+                                    categories: categories,
+                                    tickPlacement: 'on'
+                                },
+                                yaxis: {
+                                    title: {
+                                        text: 'Mensajes',
+                                    },
+                                },
+                            };
+        
+                            if (chart) {
+                                chart.destroy();
+                            }
+        
+                            chart = new ApexCharts(document.querySelector("#chart"), options);
+                            chart.render();
+        
+
+
+                            var texto = ""
+                            var num = 1
+                            var menciones = response
+                            for (var key in menciones) {
+                                texto = texto + " "+num +": " + key + "= "+ menciones[key] +" mensajes" + "\n"
+                                num += 1
+                            }
+                            $("#resultadoMenciones").val(texto); // Coloca el texto en el cuadro de texto
+                            $("#resultadoMenciones").show(); // Muestra el cuadro de texto
+                        },
+                        error: function(xhr, status, error) {
+                            $("#response").html("Error: " + error);
                         }
-                        $("#resultadoMenciones").val(texto); // Coloca el texto en el cuadro de texto
-                        $("#resultadoMenciones").show(); // Muestra el cuadro de texto
-                    },
-                    error: function(xhr, status, error) {
-                        $("#response").html("Error: " + error);
-                    }
+                    });
                 });
-            });
         });
         </script>
 {% endblock  %}
