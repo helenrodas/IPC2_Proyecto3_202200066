@@ -5,25 +5,32 @@
 <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 <div class="fondoA">
     <div class="center-box">
-        <h1>Ayuda</h1>
+        <h1 style="font-family: 'Georgia', sans-serif; color: #000; text-align: center; font-size: 36px;">Ayuda</h1>
         <form id="informacion" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre: Helen Janet Rodas Castro</label>
+                <label for="nombre" class="form-label" style="font-family: 'Georgia', serif; color: #000; font-size: 18px;">Nombre: Helen Janet Rodas Castro</label>
             </div>
             <div class="mb-3">
-                <label for="carnet" class="form-label">Carnet: 202200066</label>
+                <label for="carnet" class="form-label" style="font-family: 'Georgia', sans-serif; color: #000; font-size: 18px;">Carnet: 202200066</label>
             </div>
             <div class="mb-3">
-                <label for "carrera" class="form-label">Carrera: Ingeniería en Sistemas</label>
+                <label for="carrera" class="form-label" style="font-family: 'Georgia', sans-serif; color: #000; font-size: 18px;">Carrera: Ingeniería en Sistemas</label>
             </div>
             <div class="mb-3">
-                <label for="semestre" class="form-label">Semestre: 4to. Semestre</label>
+                <label for="semestre" class="form-label" style="font-family: 'Georgia', serif; color: #000; font-size: 18px;">Semestre: 4to. Semestre</label>
             </div>
             <div class="mb-3">
-                <label for="documentacion" class="form-label">Documentación: ...</label>
+                <label for="documentacion" class="form-label" style="font-family: 'Georgia', sans-serif; color: #000; font-size: 18px;">Documentación:</label>
+                <p>
+                    <a href="https://drive.google.com/file/d/18NEFgawNhBis31852q0nTTuWZju7Sbhl/view?usp=sharing"
+                        style="font-family: Georgia', sans-serif; color: #007BFF; font-size: 18px; text-decoration: none;"
+                        class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">documentacion</a>
+                </p>
             </div>
         </form>
     </div>
 </div>
+
+
 {% endblock  %}
