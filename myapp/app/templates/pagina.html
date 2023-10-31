@@ -19,8 +19,29 @@
                         <input class="form-control" type="file" id="fileInputMensajes" accept=".xml">
                         <button type="button" class="btn btn-primary ms-3 custom-button" id="submitButtonMensajes">Leer Mensajes</button>
                     </div>
-                    <div class="mb-2">
+                    
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Borrar datos</button>
+
+                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Advertencia</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                            Está a punto de borrar datos. Esta acción no se puede deshacer. ¿Está seguro de que desea continuar?
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Regresar</button>
+                            <button type="button" class="btn btn-primary" id="submitButtonBorrar">Borrar</button>
+                            </div>
+                        </div>
+                        </div>
                     </div>
+                    
                 </div>
                 
                 
@@ -49,9 +70,11 @@
                     contentType: false,
                     success: function(response) {
                         $("#response").html(response.message);
+                        alert(response.message)
                     },
                     error: function(xhr, status, error) {
                         $("#response").html("Error: " + error);
+                        alert(error)
                     }
                 });
             });
@@ -72,9 +95,36 @@
                     contentType: false,
                     success: function(response) {
                         $("#response").html(response.message);
+                        alert(response.message)
                     },
                     error: function(xhr, status, error) {
                         $("#response").html("Error: " + error);
+                        alert(error)
+                    }
+                });
+            });
+
+            $("#submitButtonBorrar").click(function(e) {
+                e.preventDefault();
+                var form = new FormData();
+                form.append('data', $("#inputData").val());
+                form.append('file', $("#fileInputSentimientos")[0].files[0]);
+                var csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+                form.append('csrfmiddlewaretoken', csrfToken);
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://127.0.0.1:5000/limpiarDatos",
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $("#response").html(response.message);
+                        alert(response.message)
+                    },
+                    error: function(xhr, status, error) {
+                        $("#response").html("Error: " + error);
+                        alert(error)
                     }
                 });
             });
