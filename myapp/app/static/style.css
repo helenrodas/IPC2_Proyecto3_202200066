@@ -54,7 +54,7 @@
 
 .custom-button {
     white-space: normal;
-    width: 240px; /* Permite que el botón se ajuste automáticamente al texto */
+    width: 240px; 
 }
 
 .Hashtags{
@@ -66,7 +66,7 @@
     border: 5px solid #7ca9d5 ;
     border-radius: 10px;
     padding: 20px;
-    width: 45%; /* Ajusta el ancho del cuadro según tus necesidades */
+    width: 45%; 
     margin: 0 auto;
     text-align:inherit;
 }

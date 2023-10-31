@@ -96,8 +96,6 @@ class readFile():
                 textoLower = texto.lower()
             nuevoMensaje= CMensaje(date,textoLower)
             self.lista_mensajes.append(nuevoMensaje)
-            # if date not in self.lista_fechas:
-            #     self.lista_fechas.append(date)
         self.imprimirMensajes(self.lista_mensajes)
         self.get_message_data()
         self.xml_mensajes()
@@ -120,7 +118,6 @@ class readFile():
             hashtags = re.findall(r'#\w+#', mensaje.texto)
             menciones = re.findall(r'@\w+', mensaje.texto)
 
-            # Busca si ya existe una instancia de CDatos para la fecha
             data_existente = None
             for data in self.datos_por_fecha:
                 if data.fecha == tempDate:

@@ -14,12 +14,10 @@ def cargarArchivos(request):
             return JsonResponse({"message": "No se ha seleccionado un archivo."})
 
         try:
-            # Envía la solicitud al backend de Flask con el archivo adjunto
             files = {"file": (file.name, file.read())}
             response = requests.post(url, data={"data": data}, files=files)
             response.raise_for_status()
 
-            # Procesa la respuesta del backend de Flask
             response_data = response.json()
             return JsonResponse(response_data)
         except requests.exceptions.RequestException as e:
@@ -32,18 +30,14 @@ def consultaHashtags(request):
         data = request.POST.get("data")
         fechainicio = request.POST.get("fechainicio")
         fechafinal = request.POST.get("fechafinal")
-        url  = request.POST.get("url")
 
         if not data:
             return JsonResponse({"message": "No se ha seleccionado rango de fechas."})
 
         try:
-            # Envía la solicitud al backend de Flask con el archivo adjunto
-            # files = {"file": (file.name, file.read())}
             response = requests.post("http://127.0.0.1:5000/hashtags", data={"data": data, "fechainicio": fechainicio,"fechafinal":fechafinal})
             response.raise_for_status()
 
-            # Procesa la respuesta del backend de Flask
             response_data = response.json()
             print(response_data)
             return JsonResponse(response_data)
@@ -56,18 +50,14 @@ def consultaMenciones(request):
         data = request.POST.get("data")
         fechainicio = request.POST.get("fechainicio")
         fechafinal = request.POST.get("fechafinal")
-        url  = request.POST.get("url")
 
         if not data:
             return JsonResponse({"message": "No se ha seleccionado rango de fechas."})
 
         try:
-            # Envía la solicitud al backend de Flask con el archivo adjunto
-            # files = {"file": (file.name, file.read())}
             response = requests.post("http://127.0.0.1:5000/menciones", data={"data": data, "fechainicio": fechainicio,"fechafinal":fechafinal})
             response.raise_for_status()
 
-            # Procesa la respuesta del backend de Flask
             response_data = response.json()
             print(response_data)
             return JsonResponse(response_data)
@@ -80,18 +70,14 @@ def consultaSentimientos(request):
         data = request.POST.get("data")
         fechainicio = request.POST.get("fechainicio")
         fechafinal = request.POST.get("fechafinal")
-        url  = request.POST.get("url")
 
         if not data:
             return JsonResponse({"message": "No se ha seleccionado rango de fechas."})
 
         try:
-            # Envía la solicitud al backend de Flask con el archivo adjunto
-            # files = {"file": (file.name, file.read())}
             response = requests.post("http://127.0.0.1:5000/consulta_sentimientos", data={"data": data, "fechainicio": fechainicio,"fechafinal":fechafinal})
             response.raise_for_status()
 
-            # Procesa la respuesta del backend de Flask
             response_data = response.json()
             print(response_data)
             return JsonResponse(response_data)
@@ -100,5 +86,4 @@ def consultaSentimientos(request):
     return render(request, 'sentimientos.html')
 
 def ayuda(request):
-    
     return render(request, 'ayuda.html')

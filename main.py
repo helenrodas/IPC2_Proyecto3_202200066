@@ -14,7 +14,6 @@ def upload_file_sentimientos():
         })
     file = request.files['file']
     file_content=file.read().decode('utf-8')
-    # print(file_content)
     readFileHandler.read_xml_sentimientos(file_content)
     return jsonify({
         "message": "El archivo de sentimientos fue cargado y leido exitosamente"
@@ -28,7 +27,6 @@ def upload_file_mensajes():
         })
     file = request.files['file']
     file_content=file.read().decode('utf-8')
-    # print(file_content)
     readFileHandler.read_xml_mensajes(file_content)
     return jsonify({
         "message": "El archivo de mensajes fue cargado y leido exitosamente"
